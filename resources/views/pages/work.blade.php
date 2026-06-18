@@ -1,0 +1,299 @@
+@extends('layouts.app')
+
+@section('title', 'Trabajos | ' . config('app.name', 'Laravel'))
+@section('meta_description', 'Casos de estudio y proyectos de desarrollo web, automatizaciones, integraciones API e IA.')
+
+@section('content')
+    <section class="mx-auto max-w-7xl px-4 pb-10 pt-14 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Trabajos</p>
+            <h1 class="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Casos de estudio que muestran cómo aporto valor.</h1>
+            <p class="mt-5 text-lg leading-8 text-slate-600">
+                En vez de listar servicios sueltos, prefiero explicar proyectos reales por bloques: qué problema había, qué construí y qué gana el negocio.
+            </p>
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
+        <div class="surface p-5 lg:p-6" data-work-filter-bar>
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Filtrar trabajos</p>
+                    <p class="mt-2 text-sm leading-6 text-slate-600">Selecciona el tipo de proyecto para ver solo lo que te interesa.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" data-work-filter="all" class="cursor-pointer rounded-full border border-brand-soft bg-brand px-4 py-2 text-sm font-medium text-white transition">Todos</button>
+                    <button type="button" data-work-filter="web" class="cursor-pointer rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition">Web</button>
+                    <button type="button" data-work-filter="automation" class="cursor-pointer rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition">Automatizaciones</button>
+                    <button type="button" data-work-filter="integrations" class="cursor-pointer rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition">Integraciones</button>
+                    <button type="button" data-work-filter="ai" class="cursor-pointer rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition">IA</button>
+                </div>
+            </div>
+
+            <p class="mt-4 text-sm text-slate-500" data-work-filter-status>Mostrando todos los trabajos.</p>
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" data-work-card data-work-categories="automation,ai,integrations">
+        <div class="surface p-6 lg:p-8">
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="rounded-full border border-brand-soft bg-brand-soft px-3 py-1 text-xs font-medium text-brand">Automatización e IA</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Google Maps</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Google Sheets</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Marketing review</span>
+            </div>
+
+            <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+                <div>
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">HRmotor</p>
+                    <h2 class="mt-3 text-3xl font-semibold text-slate-900">Automatización de respuestas a reseñas en delegaciones</h2>
+                    <p class="mt-4 text-base leading-7 text-slate-600">
+                        En HRmotor, empresa de compra y venta de vehículos usados, desarrollé una automatización para gestionar las reseñas que llegan a cualquier delegación a través de Google Maps.
+                    </p>
+
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-sm font-medium text-slate-900">Qué hacía antes</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Las reseñas requerían una revisión manual constante, con riesgo de tardar más de la cuenta y perder consistencia en la respuesta.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-sm font-medium text-slate-900">Qué resuelve ahora</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Las positivas se responden automáticamente con IA y las negativas pasan por un flujo de revisión humana antes de publicarse.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-[1.75rem] border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Flujo</p>
+                    <div class="mt-5 space-y-3">
+                        @foreach ([
+                            ['step' => '01', 'title' => 'Llega la reseña', 'text' => 'Una reseña entra desde Google Maps en cualquiera de las delegaciones.'],
+                            ['step' => '02', 'title' => 'Se clasifica por rating', 'text' => 'Si es 4 o 5 estrellas, la IA prepara y publica la respuesta automáticamente.'],
+                            ['step' => '03', 'title' => 'Si es negativa', 'text' => 'La reseña se envía a Google Sheets con una respuesta predefinida.'],
+                            ['step' => '04', 'title' => 'Revisión de marketing', 'text' => 'Marketing revisa y retoca el texto, y cuando marca OK se publica la respuesta.'],
+                        ] as $item)
+                            <div class="rounded-2xl border border-slate-200 bg-brand-soft/20 p-4">
+                                <p class="text-sm font-medium tracking-[0.2em] text-brand">{{ $item['step'] }}</p>
+                                <p class="mt-2 font-medium text-slate-900">{{ $item['title'] }}</p>
+                                <p class="mt-1 text-sm leading-6 text-slate-600">{{ $item['text'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 grid gap-4 lg:grid-cols-3">
+                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Valor 1</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">Respuestas más rápidas y consistentes sin depender de que alguien las gestione manualmente todo el tiempo.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Valor 2</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">Control de calidad humano cuando la reseña es delicada o negativa, sin romper el tono de la marca.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Valor 3</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">Proceso escalable para una empresa con varias delegaciones y un volumen de reseñas creciente.</p>
+                </div>
+            </div>
+
+            @php
+                $hrmotorStack = [
+                    ['name' => 'n8n', 'icon' => 'n8n.svg', 'note' => 'Orquestación del flujo automatizado.'],
+                    ['name' => 'Google Business Profile API', 'icon' => 'google-my-business.svg', 'note' => 'Entrada y gestión de reseñas.'],
+                    ['name' => 'OpenAI', 'icon' => 'openai.svg', 'note' => 'Generación de respuestas con IA.'],
+                    ['name' => 'Google Sheets', 'icon' => 'google-sheets.svg', 'note' => 'Revisión y validación manual.'],
+                ];
+            @endphp
+
+            <x-project-stack :items="$hrmotorStack" />
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" data-work-card data-work-categories="web">
+        <div class="surface p-6 lg:p-8">
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="rounded-full border border-brand-soft bg-brand-soft px-3 py-1 text-xs font-medium text-brand">Desarrollo web</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Corporativo</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Bilingüe</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Confianza y conversión</span>
+            </div>
+
+            <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+                <div>
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Fénix Byte</p>
+                    <h2 class="mt-3 text-3xl font-semibold text-slate-900">Web corporativa para Agible Capital a partir de un diseño de dirección creativa</h2>
+                    <p class="mt-4 text-base leading-7 text-slate-600">
+                        En mi etapa en Fénix Byte desarrollé la web de Agible Capital a partir de la propuesta visual planteada por una diseñadora gráfica, trabajando con WordPress y Elementor Pro para trasladar ese diseño a una experiencia web sólida, limpia y orientada a transmitir credibilidad.
+                    </p>
+                    <div class="mt-5">
+                        <a href="https://agiblecapital.es/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-strong">
+                            Ver web en vivo
+                        </a>
+                    </div>
+
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-sm font-medium text-slate-900">Qué había detrás</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Una firma de inversión necesitaba una web con tono institucional, clara en su propuesta y capaz de sostener bastante contenido de confianza.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <p class="text-sm font-medium text-slate-900">Qué desarrollé</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Una implementación cuidada del diseño con navegación clara, secciones de estrategia, equipo, portfolio, testimonios y contacto.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-[1.75rem] border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Puntos clave</p>
+                    <div class="mt-5 space-y-3">
+                        @foreach ([
+                            ['title' => 'Web institucional', 'text' => 'Enfocada a una empresa de inversión con tono serio y confianza visual.'],
+                            ['title' => 'Arquitectura de contenido', 'text' => 'Secciones de quiénes somos, estrategia, portfolio y contacto.'],
+                            ['title' => 'Contenido bilingüe', 'text' => 'Versión en español e inglés para llegar a distintos públicos.'],
+                            ['title' => 'Sistema de credibilidad', 'text' => 'Equipo, testimonios y legal para reforzar la percepción de marca.'],
+                        ] as $item)
+                            <div class="rounded-2xl border border-slate-200 bg-brand-soft/20 p-4">
+                                <p class="font-medium text-slate-900">{{ $item['title'] }}</p>
+                                <p class="mt-1 text-sm leading-6 text-slate-600">{{ $item['text'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 grid gap-4 lg:grid-cols-3">
+                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Valor 1</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">Traducción fiel del diseño a web sin perder limpieza ni coherencia visual.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Valor 2</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">Estructura sólida para una web con bastante contenido estratégico, equipo y portfolio.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Valor 3</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">Una presencia corporativa preparada para posicionarse con credibilidad y sin ruido visual.</p>
+                </div>
+            </div>
+
+            @php
+                $agibleStack = [
+                    ['name' => 'WordPress', 'icon' => 'wordpress.svg', 'note' => 'Base de gestión y publicación.'],
+                    ['name' => 'Elementor Pro', 'icon' => 'elementor.svg', 'note' => 'Construcción visual de la interfaz.'],
+                    ['name' => 'Figma', 'icon' => 'figma.svg', 'note' => 'Referencia del diseño original.'],
+                ];
+            @endphp
+
+            <x-project-stack :items="$agibleStack" />
+            @php
+                $agibleShots = array_values(array_filter([
+                    [
+                        'file' => 'images/projects/agible-capital/01-home-1.webp',
+                        'src' => asset('images/projects/agible-capital/01-home-1.webp'),
+                        'title' => 'Home',
+                        'caption' => 'Página principal con propuesta de valor, métricas y navegación institucional.',
+                        'label' => 'Home',
+                        'alt' => 'Home de Agible Capital',
+                    ],
+                    [
+                        'file' => 'images/projects/agible-capital/02-home-2.webp',
+                        'src' => asset('images/projects/agible-capital/02-home-2.webp'),
+                        'title' => 'Ficha ampliable',
+                        'caption' => 'Componente de home que despliega la ficha de un trabajador con más detalle al ampliarlo.',
+                        'label' => 'Ficha ampliable',
+                        'alt' => 'Componente ampliable de la home de Agible Capital para mostrar la ficha de un trabajador',
+                    ],
+                    [
+                        'file' => 'images/projects/agible-capital/03-about.webp',
+                        'src' => asset('images/projects/agible-capital/03-about.webp'),
+                        'title' => 'Quiénes somos',
+                        'caption' => 'Bloque de credibilidad con equipo, trayectoria y posicionamiento.',
+                        'label' => 'Quiénes somos',
+                        'alt' => 'Sección quiénes somos de Agible Capital',
+                    ],
+                    [
+                        'file' => 'images/projects/agible-capital/04-strategy.webp',
+                        'src' => asset('images/projects/agible-capital/04-strategy.webp'),
+                        'title' => 'Estrategia',
+                        'caption' => 'Sección de modelo de inversión y explicación de la estrategia.',
+                        'label' => 'Estrategia',
+                        'alt' => 'Sección estrategia de Agible Capital',
+                    ],
+                    [
+                        'file' => 'images/projects/agible-capital/05-contact.webp',
+                        'src' => asset('images/projects/agible-capital/05-contact.webp'),
+                        'title' => 'Contacto',
+                        'caption' => 'Cierre con formulario y vías de contacto para colaboración.',
+                        'label' => 'Contacto',
+                        'alt' => 'Sección contacto de Agible Capital',
+                    ],
+                ], fn ($shot) => file_exists(public_path($shot['file']))));
+            @endphp
+
+            <div class="mt-8">
+                <x-project-carousel
+                    title="Agible Capital en imágenes"
+                    subtitle="Capturas"
+                    cta-label="Ver web en vivo"
+                    cta-url="https://agiblecapital.es/"
+                    :items="$agibleShots"
+                    empty-path="public/images/projects/agible-capital/"
+                    :empty-names="['01-home-1.webp', '02-home-2.webp', '03-about.webp', '04-strategy.webp', '05-contact.webp']"
+                />
+            </div>
+        </div>
+    </section>
+
+    <x-image-lightbox />
+
+    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div class="grid gap-4 lg:grid-cols-3">
+            @foreach ([
+                [
+                    'title' => 'Desarrollo web',
+                    'text' => 'Webs corporativas, landings y portfolios que ordenan el mensaje y refuerzan la confianza.',
+                ],
+                [
+                    'title' => 'Automatizaciones e integraciones',
+                    'text' => 'Flujos entre herramientas, CRM, hojas de cálculo y APIs para ahorrar tiempo y reducir errores.',
+                ],
+                [
+                    'title' => 'IA aplicada al negocio',
+                    'text' => 'Agentes IA, asistencia telefónica y procesos inteligentes para responder, filtrar y atender mejor.',
+                ],
+            ] as $category)
+                <article class="surface p-6">
+                    <h2 class="text-xl font-semibold text-slate-900">{{ $category['title'] }}</h2>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">{{ $category['text'] }}</p>
+                </article>
+            @endforeach
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="surface p-8">
+            <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div>
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Siguiente paso</p>
+                    <h2 class="mt-3 text-3xl font-semibold text-slate-900">Cada proyecto nuevo puede entrar en una de estas tres líneas.</h2>
+                    <p class="mt-4 max-w-2xl text-slate-600">
+                        Así tu portfolio crece sin desorden: cada caso de estudio queda explicado por categoría y con una narrativa clara de problema, solución y valor.
+                    </p>
+                </div>
+                <a href="{{ route('contact') }}" class="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-strong">
+                    Cuéntame el siguiente
+                </a>
+            </div>
+        </div>
+    </section>
+@endsection

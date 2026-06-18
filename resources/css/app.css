@@ -6,4 +6,46 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-brand: #1d4ed8;
+    --color-brand-strong: #1e3a8a;
+    --color-brand-soft: #dbeafe;
+    --color-brand-warm: #f59e0b;
+    --color-brand-warm-soft: #fef3c7;
+}
+
+@layer base {
+    html {
+        color-scheme: light;
+    }
+
+    body {
+        background: #f7f7f5;
+        color: #0f172a;
+    }
+
+    ::selection {
+        background: rgba(15, 23, 42, 0.12);
+        color: #0f172a;
+    }
+}
+
+@layer components {
+    .surface {
+        @apply rounded-[1.75rem] border border-slate-200 bg-white shadow-sm;
+    }
+
+    .soft-grid {
+        background-image:
+            linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+        background-size: 44px 44px;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .carousel-track {
+        scroll-snap-type: x mandatory;
+    }
 }
