@@ -102,16 +102,7 @@
                 </div>
             </div>
 
-            @php
-                $hrmotorStack = [
-                    ['name' => 'n8n', 'icon' => 'n8n.svg', 'note' => 'Orquestación del flujo automatizado.'],
-                    ['name' => 'Google Business Profile API', 'icon' => 'google-my-business.svg', 'note' => 'Entrada y gestión de reseñas.'],
-                    ['name' => 'OpenAI', 'icon' => 'openai.svg', 'note' => 'Generación de respuestas con IA.'],
-                    ['name' => 'Google Sheets', 'icon' => 'google-sheets.svg', 'note' => 'Revisión y validación manual.'],
-                ];
-            @endphp
-
-            <x-project-stack :items="$hrmotorStack" />
+            <x-project-stack :items="config('portfolio.projects.hrmotor.stack', [])" />
         </div>
     </section>
 
@@ -186,15 +177,7 @@
                 </div>
             </div>
 
-            @php
-                $agibleStack = [
-                    ['name' => 'WordPress', 'icon' => 'wordpress.svg', 'note' => 'Base de gestión y publicación.'],
-                    ['name' => 'Elementor Pro', 'icon' => 'elementor.svg', 'note' => 'Construcción visual de la interfaz.'],
-                    ['name' => 'Figma', 'icon' => 'figma.svg', 'note' => 'Referencia del diseño original.'],
-                ];
-            @endphp
-
-            <x-project-stack :items="$agibleStack" />
+            <x-project-stack :items="config('portfolio.projects.agible.stack', [])" />
             @php
                 $agibleShots = array_values(array_filter([
                     [
@@ -253,8 +236,6 @@
             </div>
         </div>
     </section>
-
-    <x-image-lightbox />
 
     <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div class="grid gap-4 lg:grid-cols-3">

@@ -41,6 +41,34 @@
         background-size: 44px 44px;
     }
 
+    .full-bleed {
+        left: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        position: relative;
+        right: 50%;
+        width: 100vw;
+    }
+
+    .tech-marquee-mask {
+        mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    }
+
+    .tech-marquee-track {
+        animation: tech-marquee 28s linear infinite;
+        width: max-content;
+        will-change: transform;
+    }
+
+    .tech-marquee-group {
+        flex: none;
+    }
+
+    .tech-marquee:hover .tech-marquee-track {
+        animation-play-state: paused;
+    }
+
     .carousel-track::-webkit-scrollbar {
         display: none;
     }
@@ -48,4 +76,15 @@
     .carousel-track {
         scroll-snap-type: x mandatory;
     }
+
+    @keyframes tech-marquee {
+        from {
+            transform: translate3d(0, 0, 0);
+        }
+
+        to {
+            transform: translate3d(-50%, 0, 0);
+        }
+    }
+
 }

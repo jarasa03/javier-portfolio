@@ -23,20 +23,6 @@
                     </a>
                 </div>
 
-                <dl class="mt-10 grid gap-4 sm:grid-cols-3">
-                    <div class="surface p-5">
-                        <dt class="text-sm text-brand">Pilares</dt>
-                        <dd class="mt-2 text-2xl font-semibold text-slate-900">3</dd>
-                    </div>
-                    <div class="surface p-5">
-                        <dt class="text-sm text-brand">Forma de trabajo</dt>
-                        <dd class="mt-2 text-2xl font-semibold text-slate-900">A medida</dd>
-                    </div>
-                    <div class="surface p-5">
-                        <dt class="text-sm text-brand">Resultado</dt>
-                        <dd class="mt-2 text-2xl font-semibold text-slate-900">Listo para usar</dd>
-                    </div>
-                </dl>
             </div>
 
             <div class="surface overflow-hidden p-6">
