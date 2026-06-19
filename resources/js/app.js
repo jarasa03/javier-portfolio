@@ -188,9 +188,135 @@ document.querySelectorAll('[data-carousel]').forEach((carousel) => {
 
 });
 
+document.querySelectorAll('[data-tech-marquee]').forEach((marquee) => {
+    const track = marquee.querySelector('[data-tech-marquee-track]');
+    const template = marquee.querySelector('[data-tech-marquee-group]');
+
+    if (!track || !template) {
+        return;
+    }
+
+    const speed = 28;
+    let offset = 0;
+    let lastTimestamp = 0;
+    let cycleWidth = 0;
+    let rafId = null;
+    let resizeRafId = null;
+    let paused = false;
+
+    const setTrackPosition = () => {
+        track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+    };
+
+    const clearClones = () => {
+        track.querySelectorAll('[data-tech-marquee-clone="true"]').forEach((node) => node.remove());
+    };
+
+    const measureCycleWidth = () => {
+        const groupWidth = template.getBoundingClientRect().width;
+        const computedStyles = window.getComputedStyle(track);
+        const gap = parseFloat(computedStyles.columnGap || computedStyles.gap || '0') || 0;
+        return groupWidth + gap;
+    };
+
+    const fillTrack = () => {
+        clearClones();
+        track.style.animation = 'none';
+        track.style.willChange = 'transform';
+        track.style.width = 'max-content';
+        offset = 0;
+        cycleWidth = measureCycleWidth();
+
+        if (!cycleWidth) {
+            return;
+        }
+
+        const viewportWidth = marquee.getBoundingClientRect().width;
+        while (track.scrollWidth < viewportWidth + cycleWidth) {
+            const clone = template.cloneNode(true);
+            clone.setAttribute('data-tech-marquee-clone', 'true');
+            clone.setAttribute('aria-hidden', 'true');
+            track.appendChild(clone);
+        }
+
+        setTrackPosition();
+    };
+
+    const stop = () => {
+        if (rafId !== null) {
+            window.cancelAnimationFrame(rafId);
+            rafId = null;
+        }
+        lastTimestamp = 0;
+    };
+
+    const step = (timestamp) => {
+        if (paused) {
+            lastTimestamp = timestamp;
+            rafId = window.requestAnimationFrame(step);
+            return;
+        }
+
+        if (!lastTimestamp) {
+            lastTimestamp = timestamp;
+        }
+
+        const delta = timestamp - lastTimestamp;
+        lastTimestamp = timestamp;
+
+        if (cycleWidth > 0) {
+            offset = (offset + speed * (delta / 1000)) % cycleWidth;
+            setTrackPosition();
+        }
+
+        rafId = window.requestAnimationFrame(step);
+    };
+
+    const start = () => {
+        stop();
+        rafId = window.requestAnimationFrame(step);
+    };
+
+    const rebuild = () => {
+        stop();
+        fillTrack();
+        start();
+    };
+
+    const scheduleRebuild = () => {
+        if (resizeRafId !== null) {
+            window.cancelAnimationFrame(resizeRafId);
+        }
+
+        resizeRafId = window.requestAnimationFrame(() => {
+            resizeRafId = null;
+            rebuild();
+        });
+    };
+
+    marquee.addEventListener('mouseenter', () => {
+        paused = true;
+    });
+
+    marquee.addEventListener('mouseleave', () => {
+        paused = false;
+    });
+
+    window.addEventListener('resize', scheduleRebuild);
+
+    if ('ResizeObserver' in window) {
+        const observer = new ResizeObserver(scheduleRebuild);
+        observer.observe(marquee);
+        marquee._techMarqueeObserver = observer;
+    }
+
+    rebuild();
+});
+
 const lightboxModal = document.querySelector('[data-lightbox-modal]');
 if (lightboxModal) {
     const lightboxImage = lightboxModal.querySelector('[data-lightbox-image]');
+    const lightboxIframe = lightboxModal.querySelector('[data-lightbox-iframe]');
     const lightboxViewport = lightboxModal.querySelector('[data-lightbox-viewport]');
     const lightboxStage = lightboxModal.querySelector('[data-lightbox-stage]');
     const lightboxTitle = lightboxModal.querySelector('[data-lightbox-title]');
@@ -212,10 +338,20 @@ if (lightboxModal) {
     let panTranslateY = 0;
     let stageWidth = 0;
     let stageHeight = 0;
+    let activeViewerType = 'image';
+    let ctrlZoomMode = false;
 
     const applyZoom = () => {
-        if (!lightboxImage) return;
-        applyPan();
+        if (activeViewerType === 'pdf') {
+            if (!lightboxIframe) return;
+            lightboxIframe.style.transformOrigin = 'top center';
+            lightboxIframe.style.transform = `scale(${lightboxZoom})`;
+        } else if (lightboxImage) {
+            applyPan();
+        }
+        if (zoomLabel) {
+            zoomLabel.textContent = `${Math.round(lightboxZoom * 100)}%`;
+        }
     };
 
     const applyPan = () => {
@@ -251,6 +387,7 @@ if (lightboxModal) {
         lightboxModal.classList.remove('flex');
         lightboxModal.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('overflow-hidden');
+        activeViewerType = 'image';
         lightboxZoom = 1;
         if (lightboxImage) {
             panActive = false;
@@ -259,20 +396,31 @@ if (lightboxModal) {
             panTranslateY = 0;
             lightboxImage.style.transform = 'translate(0px, 0px) scale(1)';
         }
+        if (lightboxIframe) {
+            lightboxIframe.src = '';
+            lightboxIframe.classList.add('hidden');
+            lightboxIframe.style.transform = '';
+            lightboxIframe.style.transformOrigin = '';
+            lightboxIframe.classList.remove('pointer-events-none');
+        }
+        if (lightboxImage) {
+            lightboxImage.classList.remove('hidden');
+            lightboxImage.style.transform = 'translate(0px, 0px) scale(1)';
+        }
         if (zoomLabel) {
             zoomLabel.textContent = '100%';
         }
         if (lightboxStage) {
             lightboxStage.style.width = '';
             lightboxStage.style.height = '';
+            lightboxStage.style.minHeight = '';
         }
     };
 
-    const openLightbox = (source, title, caption) => {
+    const openLightbox = (source, title, caption, type = 'image') => {
         if (!lightboxImage || !lightboxTitle || !lightboxCaption) return;
 
-        lightboxImage.src = source;
-        lightboxImage.alt = title ? `${title} de Agible Capital` : 'Imagen ampliada';
+        activeViewerType = type;
         lightboxTitle.textContent = title || 'Imagen';
         lightboxCaption.textContent = caption || '';
         lightboxZoom = 1;
@@ -282,10 +430,42 @@ if (lightboxModal) {
         if (zoomLabel) {
             zoomLabel.textContent = '100%';
         }
+
+        if (type === 'pdf') {
+            lightboxImage.classList.add('hidden');
+            if (lightboxIframe) {
+                lightboxIframe.classList.remove('hidden');
+                lightboxIframe.src = `${source}#view=FitH&page=1&toolbar=0&navpanes=0`;
+                lightboxIframe.style.transformOrigin = 'top center';
+                lightboxIframe.style.transform = 'scale(1)';
+                lightboxIframe.classList.toggle('pointer-events-none', ctrlZoomMode);
+            }
+            if (lightboxStage) {
+                lightboxStage.style.width = 'min(92vw, 1400px)';
+                lightboxStage.style.height = 'min(78vh, 960px)';
+                lightboxStage.style.minHeight = 'min(78vh, 960px)';
+            }
+        } else {
+            lightboxImage.classList.remove('hidden');
+            if (lightboxIframe) {
+                lightboxIframe.classList.add('hidden');
+                lightboxIframe.src = '';
+                lightboxIframe.style.transform = '';
+                lightboxIframe.style.transformOrigin = '';
+                lightboxIframe.classList.remove('pointer-events-none');
+            }
+            lightboxImage.src = source;
+            lightboxImage.alt = title || 'Imagen ampliada';
+        }
+
         lightboxModal.classList.remove('hidden');
         lightboxModal.classList.add('flex');
         lightboxModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('overflow-hidden');
+
+        if (type === 'pdf') {
+            return;
+        }
 
         const handleLoad = () => {
             fitStageToImage();
@@ -303,10 +483,12 @@ if (lightboxModal) {
 
     document.querySelectorAll('[data-lightbox-open]').forEach((trigger) => {
         trigger.addEventListener('click', () => {
+            const type = trigger.getAttribute('data-lightbox-type') || 'image';
             openLightbox(
                 trigger.getAttribute('data-lightbox-src') || '',
                 trigger.getAttribute('data-lightbox-title') || '',
-                trigger.getAttribute('data-lightbox-caption') || ''
+                trigger.getAttribute('data-lightbox-caption') || '',
+                type
             );
         });
     });
@@ -320,7 +502,7 @@ if (lightboxModal) {
             event.preventDefault();
             const delta = event.deltaY < 0 ? zoomStep : -zoomStep;
             lightboxZoom = Math.min(zoomMax, Math.max(zoomMin, lightboxZoom + delta));
-            applyPan();
+            applyZoom();
         },
         { passive: false }
     );
@@ -331,7 +513,14 @@ if (lightboxModal) {
             panTranslateX = 0;
             panTranslateY = 0;
         }
-        applyPan();
+        applyZoom();
+    };
+
+    const setCtrlZoomMode = (enabled) => {
+        ctrlZoomMode = enabled;
+        if (activeViewerType === 'pdf' && lightboxIframe) {
+            lightboxIframe.classList.toggle('pointer-events-none', enabled);
+        }
     };
 
     zoomInButton?.addEventListener('click', () => adjustZoom(1));
@@ -370,9 +559,22 @@ if (lightboxModal) {
     lightboxViewport?.addEventListener('pointerleave', endPan);
 
     window.addEventListener('keydown', (event) => {
+        if (event.key === 'Control') {
+            setCtrlZoomMode(true);
+        }
         if (event.key === 'Escape' && !lightboxModal.classList.contains('hidden')) {
             closeLightbox();
         }
+    });
+
+    window.addEventListener('keyup', (event) => {
+        if (event.key === 'Control') {
+            setCtrlZoomMode(false);
+        }
+    });
+
+    window.addEventListener('blur', () => {
+        setCtrlZoomMode(false);
     });
 
     lightboxModal.addEventListener('click', (event) => {

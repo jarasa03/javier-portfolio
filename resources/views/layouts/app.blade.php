@@ -9,9 +9,11 @@
         content="@yield('meta_description', 'Portfolio freelance de desarrollo web, automatizaciones, APIs, agentes IA y Google Business Profile.')"
     >
     <title>@yield('title', config('app.name', 'Laravel'))</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-[#f7f7f5] text-slate-900 antialiased">
+<body class="min-h-screen overflow-x-hidden bg-[#f7f7f5] text-slate-900 antialiased">
     <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div class="absolute inset-x-0 top-0 h-24 bg-[#f7f7f5]"></div>
         <div class="absolute inset-x-0 top-24 h-px bg-slate-200"></div>
@@ -31,19 +33,17 @@
         <header class="sticky top-0 z-40 border-b border-brand-soft/80 bg-[#f8fbff]/92 backdrop-blur-md shadow-[0_1px_0_rgba(29,78,216,0.05)]">
             <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
                 <a href="{{ route('home') }}" class="group inline-flex items-center gap-3">
-                    @php($avatarPath = public_path('images/javier-portrait.PNG'))
-                    @if (file_exists($avatarPath))
-                        <img
-                            src="{{ asset('images/javier-portrait.PNG') }}"
-                            alt="Foto de Javier"
-                            class="h-14 w-14 rounded-full border border-slate-200 object-cover shadow-sm lg:h-16 lg:w-16"
-                            style="object-position: center 28%;"
-                        >
-                    @else
-                        <span class="flex h-14 w-14 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-sm font-semibold text-slate-700 transition group-hover:bg-slate-200 lg:h-16 lg:w-16">
-                            JV
-                        </span>
-                    @endif
+                    <span class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-[1.1rem] border border-brand-soft bg-brand shadow-sm transition group-hover:scale-[1.02] lg:h-16 lg:w-16">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logo-title logo-desc" class="h-full w-full">
+                            <title id="logo-title">JA</title>
+                            <desc id="logo-desc">Monograma JA de Javier Arruabarrena.</desc>
+                            <rect width="64" height="64" rx="18" fill="#1D4ED8" />
+                            <path d="M23 18V39C23 45 19.5 48 14.5 48" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+                            <path d="M31 48L39 18L48 48" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M35 38H44" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+                            <circle cx="49" cy="15" r="5" fill="#F59E0B" />
+                        </svg>
+                    </span>
                     <span>
                         <span class="block text-sm font-medium tracking-[0.22em] text-brand uppercase">Portfolio freelance</span>
                         <span class="block text-lg font-semibold text-slate-900">{{ config('app.name', 'Laravel') }}</span>
@@ -106,6 +106,8 @@
         <main>
             @yield('content')
         </main>
+
+        <x-image-lightbox />
 
         <footer class="border-t border-brand-soft/80 bg-[#f8fbff]/92 backdrop-blur-md shadow-[0_-1px_0_rgba(29,78,216,0.05)]">
             <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
