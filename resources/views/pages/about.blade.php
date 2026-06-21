@@ -8,6 +8,7 @@
         <div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div>
                 <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Sobre mí</p>
+                <p class="mt-3 text-sm font-medium tracking-[0.24em] text-brand uppercase">Francisco Javier Arruabarrena Sabroso</p>
                 <h1 class="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Me gusta construir sistemas sencillos que resuelven problemas reales.</h1>
                 <p class="mt-5 text-lg leading-8 text-slate-600">
                     Mi trabajo une desarrollo web, automatización e IA aplicada para que empresas pequeñas y marcas personales puedan vender y operar con más inteligencia.
@@ -26,15 +27,18 @@
                                     class="block h-auto w-full max-w-[260px] rounded-[1.25rem] shadow-sm"
                                 >
                             </div>
-                            <div class="flex flex-col justify-between p-6 sm:p-7 lg:p-8">
-                                <div>
-                                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Sobre mí</p>
-                                    <p class="mt-3 text-xl font-semibold text-slate-900">Desarrollador web</p>
+                            <div class="flex flex-col justify-center p-6 sm:p-7 lg:p-8">
+                                <div class="space-y-4">
+                                    @foreach ([
+                                        'Desarrollador web',
+                                        'Experto en inteligencia artificial',
+                                        'Especialista en automatizaciones',
+                                    ] as $item)
+                                        <p class="text-2xl font-semibold leading-tight tracking-tight text-slate-900 sm:text-[1.8rem]">
+                                            {{ $item }}
+                                        </p>
+                                    @endforeach
                                 </div>
-                                <ul class="mt-6 space-y-3 text-sm leading-7 text-slate-600">
-                                    <li>Experto en inteligencia artificial</li>
-                                    <li>Especialista en automatizaciones</li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -55,6 +59,61 @@
                 </div>
             @endforeach
         </div>
+
+        <section class="mt-12">
+            <div class="surface p-6 lg:p-8">
+                <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+                    <div>
+                        <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Redes sociales</p>
+                        <h2 class="mt-3 text-3xl font-semibold text-slate-900">Donde encontrarme y seguir el trabajo que voy compartiendo.</h2>
+                        <p class="mt-4 max-w-xl text-sm leading-6 text-slate-600">
+                            Si quieres ver más contexto, avances o proyectos fuera de esta web, aquí tienes mis perfiles principales.
+                        </p>
+                    </div>
+
+                    <div class="grid gap-3">
+                        @foreach ([
+                            [
+                                'name' => 'LinkedIn',
+                                'handle' => '@javierarrua',
+                                'url' => 'https://www.linkedin.com/in/javierarrua/',
+                                'icon' => 'images/socials/linkedin.svg',
+                            ],
+                            [
+                                'name' => 'GitHub',
+                                'handle' => '@jarasa03',
+                                'url' => 'https://github.com/jarasa03',
+                                'icon' => 'images/socials/github.svg',
+                            ],
+                            [
+                                'name' => 'Instagram',
+                                'handle' => '@jarasa03',
+                                'url' => 'https://www.instagram.com/jarasa03/',
+                                'icon' => 'images/socials/instagram.svg',
+                            ],
+                        ] as $social)
+                            <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-4 transition hover:border-brand-soft hover:bg-brand-soft/20">
+                                <div class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft/60 text-brand">
+                                    @if (file_exists(public_path($social['icon'])))
+                                        <img src="{{ asset($social['icon']) }}" alt="" class="h-5 w-5 object-contain">
+                                    @else
+                                        <span class="text-sm font-semibold">{{ substr($social['name'], 0, 1) }}</span>
+                                    @endif
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium text-slate-500">{{ $social['name'] }}</p>
+                                    <p class="text-base font-semibold text-slate-900 transition group-hover:text-brand">{{ $social['handle'] }}</p>
+                                </div>
+                                <svg class="ml-auto h-5 w-5 shrink-0 text-slate-400 transition group-hover:text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h8v8" />
+                                </svg>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <style>
             .about-tech-marquee-mask {

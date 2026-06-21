@@ -20,13 +20,14 @@
 
         <div class="min-h-0 flex-1 overflow-hidden bg-slate-50 p-4">
             <div class="flex h-full min-h-0 flex-col gap-4">
-                <div class="min-h-0 flex-1 overflow-auto rounded-[1rem] bg-slate-100 p-4" data-lightbox-viewport>
+                <div class="min-h-0 flex-1 overflow-auto cursor-grab rounded-[1rem] bg-slate-100 p-4" data-lightbox-viewport>
                     <div class="relative mx-auto overflow-hidden rounded-[0.85rem] bg-white shadow-sm" data-lightbox-stage>
                         <img
                             src=""
                             alt=""
-                            class="block h-full w-full origin-center object-contain transition-transform duration-200 ease-out"
+                            class="block h-full w-full origin-center object-contain cursor-grab select-none transition-transform duration-200 ease-out"
                             data-lightbox-image
+                            draggable="false"
                         >
                         <iframe
                             src=""
