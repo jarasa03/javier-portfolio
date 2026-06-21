@@ -45,8 +45,8 @@
                         </svg>
                     </span>
                     <span>
-                        <span class="block text-sm font-medium tracking-[0.22em] text-brand uppercase">Portfolio freelance</span>
-                        <span class="block text-lg font-semibold text-slate-900">{{ config('app.name', 'Laravel') }}</span>
+                        <span class="block text-sm font-medium tracking-[0.22em] text-brand uppercase">Portfolio</span>
+                        <span class="block text-lg font-semibold text-slate-900">Javier Arruabarrena Sabroso</span>
                     </span>
                 </a>
 
@@ -123,6 +123,18 @@
                 </div>
             </div>
         </footer>
+
+        <button
+            type="button"
+            class="fixed bottom-5 right-5 z-50 inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-brand-soft bg-white/95 text-brand shadow-lg shadow-slate-900/10 backdrop-blur transition hover:-translate-y-0.5 hover:border-brand hover:bg-brand-soft/40 hover:text-brand-strong focus:outline-none focus:ring-2 focus:ring-brand/30 focus:ring-offset-2 focus:ring-offset-[#f7f7f5]"
+            data-scroll-top
+            aria-label="Volver arriba"
+        >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.5 10.5L12 5l5.5 5.5" />
+            </svg>
+        </button>
     </div>
 </body>
 </html>

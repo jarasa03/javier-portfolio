@@ -1,5 +1,6 @@
 const menuButton = document.querySelector('[data-menu-button]');
 const menuPanel = document.querySelector('[data-menu-panel]');
+const scrollTopButton = document.querySelector('[data-scroll-top]');
 
 if (menuButton && menuPanel) {
     const setExpanded = (expanded) => {
@@ -20,6 +21,16 @@ if (menuButton && menuPanel) {
         if (window.innerWidth >= 1024) {
             setExpanded(false);
         }
+    });
+}
+
+if (scrollTopButton) {
+    scrollTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+        scrollTopButton.blur();
     });
 }
 
@@ -362,24 +373,19 @@ if (lightboxModal) {
         }
     };
 
-    const fitStageToImage = () => {
-        if (!lightboxImage || !lightboxStage || !lightboxImage.naturalWidth || !lightboxImage.naturalHeight) return;
+    const getPanMultiplier = () => Math.max(1.2, lightboxZoom);
 
-        const ratio = lightboxImage.naturalWidth / lightboxImage.naturalHeight;
-        const viewportWidth = Math.min(window.innerWidth * 0.82, 1100);
-        const viewportHeight = Math.min(window.innerHeight * 0.58, 720);
-        let width = viewportWidth;
-        let height = width / ratio;
+    const fitImageStage = () => {
+        if (!lightboxStage || activeViewerType !== 'image') return;
 
-        if (height > viewportHeight) {
-            height = viewportHeight;
-            width = height * ratio;
-        }
+        const viewportWidth = Math.min(window.innerWidth * 0.94, 1500);
+        const viewportHeight = Math.min(window.innerHeight * 0.82, 980);
 
-        stageWidth = Math.round(width);
-        stageHeight = Math.round(height);
+        stageWidth = Math.round(viewportWidth);
+        stageHeight = Math.round(viewportHeight);
         lightboxStage.style.width = `${stageWidth}px`;
         lightboxStage.style.height = `${stageHeight}px`;
+        lightboxStage.style.minHeight = `${stageHeight}px`;
     };
 
     const closeLightbox = () => {
@@ -454,6 +460,7 @@ if (lightboxModal) {
                 lightboxIframe.style.transformOrigin = '';
                 lightboxIframe.classList.remove('pointer-events-none');
             }
+            fitImageStage();
             lightboxImage.src = source;
             lightboxImage.alt = title || 'Imagen ampliada';
         }
@@ -463,21 +470,8 @@ if (lightboxModal) {
         lightboxModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('overflow-hidden');
 
-        if (type === 'pdf') {
-            return;
-        }
-
-        const handleLoad = () => {
-            fitStageToImage();
-            if (lightboxImage) {
-                lightboxImage.style.transform = 'translate(0px, 0px) scale(1)';
-            }
-        };
-
-        if (lightboxImage.complete) {
-            handleLoad();
-        } else {
-            lightboxImage.addEventListener('load', handleLoad, { once: true });
+        if (type !== 'pdf' && lightboxImage) {
+            lightboxImage.style.transform = 'translate(0px, 0px) scale(1)';
         }
     };
 
@@ -528,18 +522,20 @@ if (lightboxModal) {
 
     lightboxViewport?.addEventListener('pointerdown', (event) => {
         if (!lightboxImage || lightboxZoom <= 1) return;
+        event.preventDefault();
         panActive = true;
         panPointerId = event.pointerId;
         panStartX = event.clientX;
         panStartY = event.clientY;
         lightboxImage.setPointerCapture(event.pointerId);
+        lightboxViewport.classList.add('cursor-grabbing');
         lightboxImage.classList.add('cursor-grabbing');
     });
 
     lightboxViewport?.addEventListener('pointermove', (event) => {
         if (!panActive || panPointerId !== event.pointerId || lightboxZoom <= 1) return;
-        const deltaX = event.clientX - panStartX;
-        const deltaY = event.clientY - panStartY;
+        const deltaX = (event.clientX - panStartX) * getPanMultiplier();
+        const deltaY = (event.clientY - panStartY) * getPanMultiplier();
         panTranslateX += deltaX;
         panTranslateY += deltaY;
         panStartX = event.clientX;
@@ -551,13 +547,12 @@ if (lightboxModal) {
         if (panPointerId !== null && event?.pointerId !== undefined && panPointerId !== event.pointerId) return;
         panActive = false;
         panPointerId = null;
+        lightboxViewport?.classList.remove('cursor-grabbing');
         lightboxImage?.classList.remove('cursor-grabbing');
     };
 
     lightboxViewport?.addEventListener('pointerup', endPan);
     lightboxViewport?.addEventListener('pointercancel', endPan);
-    lightboxViewport?.addEventListener('pointerleave', endPan);
-
     window.addEventListener('keydown', (event) => {
         if (event.key === 'Control') {
             setCtrlZoomMode(true);
@@ -577,15 +572,17 @@ if (lightboxModal) {
         setCtrlZoomMode(false);
     });
 
-    lightboxModal.addEventListener('click', (event) => {
-        if (event.target === lightboxModal) {
-            closeLightbox();
+    window.addEventListener('resize', () => {
+        if (!lightboxModal.classList.contains('hidden')) {
+            if (activeViewerType === 'image') {
+                fitImageStage();
+            }
         }
     });
 
-    window.addEventListener('resize', () => {
-        if (!lightboxModal.classList.contains('hidden')) {
-            fitStageToImage();
+    lightboxModal.addEventListener('click', (event) => {
+        if (event.target === lightboxModal) {
+            closeLightbox();
         }
     });
 }
