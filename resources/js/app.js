@@ -175,8 +175,20 @@ document.querySelectorAll('[data-carousel]').forEach((carousel) => {
 
     prevButton.addEventListener('click', () => {
         const currentIndex = getIndex();
-        const previousIndex = currentIndex <= 0 ? 0 : currentIndex - 1;
-        goTo(previousIndex);
+        if (currentIndex <= 0) {
+            isLoopJumping = true;
+            track.style.scrollBehavior = 'auto';
+            track.scrollLeft = (cloneIndex - 1) * getStep();
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => {
+                    track.style.scrollBehavior = 'smooth';
+                    isLoopJumping = false;
+                });
+            });
+            return;
+        }
+
+        goTo(currentIndex - 1);
     });
 
     nextButton.addEventListener('click', () => {
