@@ -317,14 +317,6 @@ document.querySelectorAll('[data-tech-marquee]').forEach((marquee) => {
         });
     };
 
-    marquee.addEventListener('mouseenter', () => {
-        paused = true;
-    });
-
-    marquee.addEventListener('mouseleave', () => {
-        paused = false;
-    });
-
     window.addEventListener('resize', scheduleRebuild);
 
     if ('ResizeObserver' in window) {
