@@ -108,7 +108,7 @@
         </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" data-work-card data-work-categories="automation-integrations,ai,web">
+    <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" data-work-card data-work-categories="web,ai">
         <div class="surface relative overflow-hidden p-6 lg:p-8">
             <div class="absolute inset-x-0 top-0 h-1 bg-brand"></div>
             <div class="flex flex-wrap items-center gap-3">
@@ -900,6 +900,81 @@
 
             <div class="mt-8">
                 <x-project-stack :items="config('portfolio.projects.voice_sales_agent.stack', [])" />
+            </div>
+        </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" data-work-card data-work-categories="automation-integrations,ai">
+        <div class="surface relative overflow-hidden p-6 lg:p-8">
+            <div class="absolute inset-x-0 top-0 h-1 bg-brand"></div>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="rounded-full border border-brand-soft bg-brand-soft px-3 py-1 text-xs font-medium text-brand">Agente de voz</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">ElevenLabs</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Twilio</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">n8n</span>
+                <span class="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">Salesforce</span>
+            </div>
+
+            <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+                <div>
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">HR Motor</p>
+                    <h2 class="mt-3 text-3xl font-semibold text-slate-900">Filtrador de llamadas para redirigir al departamento y la delegación correcta</h2>
+                    <p class="mt-4 text-base leading-7 text-slate-600">
+                        Desarrollé para HR Motor un filtrador telefónico con ElevenLabs que identificaba desde dónde y para qué llamaba el cliente.
+                        ElevenLabs decidía a qué departamento debía ir la llamada y n8n se encargaba de resolver las delegaciones de una comunidad autónoma, consultar los horarios de una delegación concreta y crear el lead en Salesforce antes del desvío.
+                        Después, Twilio ejecutaba el desvío al departamento correcto y dejaba todo preparado para que el cliente llegase a la persona adecuada.
+                    </p>
+
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.02)]">
+                            <p class="text-sm font-medium text-slate-900">Detecta el motivo</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                La IA entendía si el cliente llamaba por compra, venta, postventa u otra necesidad comercial.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.02)]">
+                            <p class="text-sm font-medium text-slate-900">Resuelve la delegación</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                n8n consultaba qué delegaciones pertenecían a la comunidad autónoma y qué horarios tenía abierta cada una.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.02)]">
+                            <p class="text-sm font-medium text-slate-900">Desvía la llamada</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                Twilio ejecutaba el desvío para llevar la llamada al departamento correcto sin fricción para el cliente.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.02)]">
+                            <p class="text-sm font-medium text-slate-900">Crea el lead</p>
+                            <p class="mt-2 text-sm leading-6 text-slate-600">
+                                n8n creaba el lead en Salesforce con toda la información recogida durante la llamada antes de redirigirla.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-sm font-medium tracking-[0.24em] text-brand uppercase">Funcionamiento</p>
+                    <div class="mt-5 grid gap-3">
+                        @foreach ([
+                            ['step' => '01', 'title' => 'Entra la llamada del cliente'],
+                            ['step' => '02', 'title' => 'ElevenLabs identifica motivo y origen'],
+                            ['step' => '03', 'title' => 'n8n resuelve delegaciones, horarios y lead'],
+                            ['step' => '04', 'title' => 'Twilio desvía la llamada al destino correcto'],
+                        ] as $item)
+                            <div class="flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-sm font-semibold text-brand shadow-[0_1px_0_rgba(15,23,42,0.04)]">
+                                    {{ $item['step'] }}
+                                </div>
+                                <p class="text-sm font-medium text-slate-900">{{ $item['title'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <x-project-stack :items="config('portfolio.projects.voice_call_filter.stack', [])" />
             </div>
         </div>
     </section>
