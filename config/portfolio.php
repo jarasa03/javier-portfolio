@@ -72,7 +72,16 @@ return [
                 ['name' => 'n8n', 'icon' => 'n8n.svg', 'note' => 'Orquestación de los flujos de voz.'],
                 ['name' => 'ElevenLabs', 'icon' => 'elevenlabs.svg', 'note' => 'Motor de voz y conversación con el cliente.'],
                 ['name' => 'OpenAI', 'icon' => 'openai.svg', 'note' => 'Intención, razonamiento y oferta de vehículos.'],
+                ['name' => 'Twilio', 'icon' => 'twilio.svg', 'note' => 'Derivación a atención al cliente o postventa.'],
                 ['name' => 'Salesforce', 'icon' => 'salesforce.svg', 'note' => 'Stock, leads, citas y cuentas.'],
+            ],
+        ],
+        'voice_call_filter' => [
+            'stack' => [
+                ['name' => 'n8n', 'icon' => 'n8n.svg', 'note' => 'Orquestación del filtrado y el desvío de llamadas.'],
+                ['name' => 'ElevenLabs', 'icon' => 'elevenlabs.svg', 'note' => 'IA de voz para detectar motivo y origen de la llamada.'],
+                ['name' => 'Twilio', 'icon' => 'twilio.svg', 'note' => 'Telefonía y redirección al departamento correcto.'],
+                ['name' => 'Salesforce', 'icon' => 'salesforce.svg', 'note' => 'Creación del lead y registro del contexto.'],
             ],
         ],
         'commercials_chatbot' => [
