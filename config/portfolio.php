@@ -72,6 +72,7 @@ return [
                 ['name' => 'n8n', 'icon' => 'n8n.svg', 'note' => 'Orquestación de los flujos de voz.'],
                 ['name' => 'ElevenLabs', 'icon' => 'elevenlabs.svg', 'note' => 'Motor de voz y conversación con el cliente.'],
                 ['name' => 'OpenAI', 'icon' => 'openai.svg', 'note' => 'Intención, razonamiento y oferta de vehículos.'],
+                ['name' => 'Twilio', 'icon' => 'twilio.svg', 'note' => 'Derivación a atención al cliente o postventa.'],
                 ['name' => 'Salesforce', 'icon' => 'salesforce.svg', 'note' => 'Stock, leads, citas y cuentas.'],
             ],
         ],

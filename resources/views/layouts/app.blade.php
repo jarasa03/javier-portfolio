@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#050816">
+    <script>document.documentElement.classList.add('js');</script>
     <meta
         name="description"
         content="@yield('meta_description', 'Portfolio freelance de desarrollo web, automatizaciones, APIs, agentes IA y Google Business Profile.')"
@@ -13,7 +14,7 @@
     <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen overflow-x-hidden bg-[#f7f7f5] text-slate-900 antialiased">
+<body class="min-h-screen overflow-x-hidden bg-[#f7f7f5] text-slate-900 antialiased flex flex-col">
     <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div class="absolute inset-x-0 top-0 h-24 bg-[#f7f7f5]"></div>
         <div class="absolute inset-x-0 top-24 h-px bg-slate-200"></div>
@@ -29,7 +30,7 @@
         ];
     @endphp
 
-    <div class="relative">
+    <div class="relative flex min-h-screen flex-1 flex-col">
         <header class="sticky top-0 z-40 border-b border-brand-soft/80 bg-[#f8fbff]/92 backdrop-blur-md shadow-[0_1px_0_rgba(29,78,216,0.05)]">
             <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
                 <a href="{{ route('home') }}" class="group inline-flex items-center gap-3">
@@ -103,7 +104,7 @@
             </div>
         </header>
 
-        <main>
+        <main class="flex-1">
             @yield('content')
         </main>
 
